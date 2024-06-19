@@ -13,7 +13,8 @@ sap.ui.define([
                 selectedMarine: false,
                 what3words: "",
                 mapVisible: false,
-                selectedFiles: []  
+                selectedFiles: [],
+                
             });
         
             // Set the model to the view
@@ -147,6 +148,23 @@ sap.ui.define([
             var oModel = this.getView().getModel();
             oModel.setProperty("/files", []); // Initialize or clear files array
         },
+
+        complianceFormatter: function (selectedSecurity, selectedEnvironment, selectedHealthy, selectedMarine) {
+            var compliance = [];
+            if (selectedSecurity) {
+                compliance.push("Security");
+            }
+            if (selectedEnvironment) {
+                compliance.push("Environment");
+            }
+            if (selectedHealthy) {
+                compliance.push("Healthy & Safety");
+            }
+            if (selectedMarine) {
+                compliance.push("Marine");
+            }
+            return compliance.join(", ");
+        }
         
         
     });

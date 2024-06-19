@@ -24,7 +24,7 @@
                         width="100%"
                     >
                         <Image
-                            src="./images/spotit_300.png"
+                            src="/images/spotit_300.png"
                             width="100%"
                             height="200px"
                             densityAware="false"
@@ -39,7 +39,7 @@
                         width="100%"
                     >
                         <Image
-                            src="./images/spot-it.png"
+                            src="/images/spot-it.png"
                             width="100%"
                             height="100px"
                             densityAware="false"
@@ -73,26 +73,60 @@
                         />
                         <HBox
                             alignItems="Center"
-                            justifyContent="Start"
-                            width="100%"
+                            justifyContent="Center"
+                            width="50%"
                         >
-                            <RadioButtonGroup
-                                selectedIndex="{/selectedIncidentType}"
-                                columns="3"
+                            <SegmentedButton
+                                id="idReportTypeSB"
+                                visible="{device>/system/desktop}"
+                                selectedKey="{/incidentType}"
                             >
-                                <buttons>
-                                    <RadioButton text="Incident" />
-                                    <RadioButton text="Near Miss" />
-                                    <RadioButton
-                                        text="Observation"
-                                        select="onObservationSelect"
-                                    />
-                                </buttons>
-                            </RadioButtonGroup>
+                                <Button
+                                    id="idSBIncident"
+                                    text="Incident"
+                                    width="auto"
+                                />
+                                <Button
+                                    id="idSBNearMiss"
+                                    text="Near Miss"
+                                    width="auto"
+                                />
+                                <Button
+                                    id="idSBObservation"
+                                    text="Observation"
+                                    width="auto"
+                                />
+                            </SegmentedButton>
                         </HBox>
                     </VBox>
                 </VBox>
-
+                <!-- Classification Heading -->
+                <VBox >
+                    <Title
+                        text="Classification"
+                        level="H5"
+                    />
+                    <HBox alignItems="Center"
+                            justifyContent="Center"
+                            width="55%">
+                    <MultiInput
+                        id="idClassificationMultiInput"
+                        showSuggestion="true"
+                        width="300px"
+                        class="multiInputMargin" 
+                         value="{/classification}"
+                        suggestionItems="{
+                path: 'classification>/data',
+                sorter: { path: 'value' }
+            }"
+                    >
+                        <core:Item
+                            key="{classification>key}"
+                            text="{classification>value}"
+                        />
+                    </MultiInput>
+                    </HBox>
+                </VBox>
                 <!-- Compliance Function Heading -->
                 <Title
                     text="Compliance Function"
@@ -108,8 +142,8 @@
                         <!-- Security CheckBox and Text -->
                         <HBox
                             alignItems="Center"
-                            justifyContent="Start"
-                            width="100%"
+                            justifyContent="Center"
+                            width="35%"
                         >
                             <CheckBox
                                 text="Security"
@@ -120,8 +154,9 @@
                         </HBox>
                         <HBox
                             alignItems="Center"
-                            justifyContent="Start"
-                            width="100%"
+                            justifyContent="Center"
+                            width="40%"
+                            class="sec"
                         >
                             <Text
                                 text="If Security is checked, then no other classification can also be checked."
@@ -131,8 +166,8 @@
                         <!-- Environment, Healthy & Safety, Marine CheckBoxes -->
                         <HBox
                             alignItems="Center"
-                            justifyContent="Start"
-                            width="100%"
+                            justifyContent="Center"
+                            width="57%"
                         >
                             <CheckBox
                                 text="Environment"
@@ -171,6 +206,8 @@
                         id="ProductName"
                         change="validateProdInfoStep"
                         valueStateText="Select Port Location"
+                        width="300px"
+                        selectedKey="{/port}"
                     >
                         <core:Item
                             key="Select Port Location"
@@ -187,7 +224,7 @@
                     </Select>
 
                     <Label text="Location description" />
-                    <Input value="{/Location}" />
+                    <Input value="{/location}"  width="300px" />
                     <!-- <core:HTML
                                 id="w3wMap"
                                 content=""
@@ -243,11 +280,12 @@
                                     <HBox>
                                         <Input value="{/latitude}" />
                                         <Input value="{/longitude}" />
-                                        <Input value="{/longitude}" />
+                                        <Input value="{/long}" />
                                         <Select
                                             id="loc"
                                             change="validateProdInfoStep"
                                             valueStateText="Select Location"
+                                            selectedKey="{/direction1}" 
                                         >
                                             <core:Item
                                                 key="north"
@@ -260,13 +298,14 @@
                                         </Select>
                                     </HBox>
                                     <HBox>
-                                        <Input value="{/latitude}" />
-                                        <Input value="{/longitude}" />
-                                        <Input value="{/longitude}" />
+                                        <Input value="{/latitude2}" />
+                                        <Input value="{/longitude2}"  />
+                                        <Input value="{/long2}"  />
                                         <Select
                                             id="loc1"
                                             change="validateProdInfoStep"
                                             valueStateText="Select Location"
+                                            selectedKey="{/direction2}"
                                         >
                                             <core:Item
                                                 key="east"
@@ -287,7 +326,7 @@
                             >
                                 <VBox>
                                     <Text text="Latitude, Longitude" />
-                                    <Input value="{/Long}" />
+                                    <Input value="{/decimalLong}" />
                                     <HBox>
                                         <Text text="Use " />
                                         <Link
@@ -308,7 +347,7 @@
                 </form:SimpleForm>
             </WizardStep>
 
-<WizardStep
+            <WizardStep
                 id="EventDetails"
                 title="Event Details"
                 activate="onActivate"
@@ -324,27 +363,26 @@
                                 text="Use appropriate language. Remember, everything you write could potentially be releasable, including directly to the individual/s mentioned in this Spot-It."
                             />
                         </HBox>
-                        <Input value="{/Title}" />
+                        <Input value="{/title}"  width="300px" />
                     </VBox>
                     <Label text="Date/time event occurred" />
-                    <DateTimePicker value="{
-				path: '/dtValue'}" />
+                    <DateTimePicker value="{/dateTime}" width="300px"/>
                     <Label text="Description of events" />
                     <TextArea
-                        value="{/productDescription}"
-                        rows="8"
+                        value="{/description}"
+                        rows="8"  width="300px"
                     />
 
                     <Label
                         text="What action did you take? If none, what action could be taken? (optional)"
                     />
                     <TextArea
-                        value="{/productDescription}"
+                        value="{/action}"
                         rows="8"
+                        width="300px"
                     />
                 </form:SimpleForm>
             </WizardStep>
-
 
             <WizardStep
                 id="OptionalInfoStep"
@@ -361,12 +399,13 @@
                     <Label text="Cover photo" />
                     <u:FileUploader
                         id="fileUploader"
-                        width="400px"
+                        width="300px"
                         tooltip="Upload product cover photo to the local server"
                         style="Emphasized"
                         placeholder="Choose a file for Upload..."
                         multiple="true"
                         change="onFileUploaderChange"
+                      
                     />
                 </form:SimpleForm>
 
@@ -404,23 +443,102 @@
                     layout="ResponsiveGridLayout"
                 >
                     <Label text="Name (optional)" />
-                    <Input value="{/Name}" />
+                    <Input value="{/name}"    width="300px"/>
                     <Label text="Your Telephone (optional)" />
-                    <Input value="{/Telephone}" />
+                    <Input value="{/telephone}"  width="300px"/>
                     <Label text="Your Email(optional)" />
                     <VBox>
                         <HBox>
                             <CheckBox
                                 text="Receipt only"
                                 id="email"
+                                selected="{/receiptOnly}"
                             />
                         </HBox>
-                        <Input value="{/Email}" />
+                        <Input value="{/email}"  width="300px" />
                         <Text
                             text="You do not have to give your name/telephone/email, but if you do we will be able to provide you with any feedback.
 If you would like an email receipt but not to submit your email as part of this report, you can do this by selecting 'Receipt only'."
                         />
                     </VBox>
+                </form:SimpleForm>
+            </WizardStep>
+            <WizardStep
+                id="idSummary"
+                activate="onActivate"
+                title="Summary"
+            >
+                <!-- <form:SimpleForm>
+                    <Label text="Category" />
+                    <Text text="Observation" />
+                    <Label text="Classification" />
+                    <MultiInput enabled="false">
+                        <tokens>
+                            <Token text="Behavioural Safety" />
+                            <Token text="Best Practice" />
+                        </tokens>
+                    </MultiInput>
+                    <Label text="Compliance" />
+                    <MultiInput enabled="false">
+                        <tokens>
+                            <Token text="Environment" />
+                            <Token text="Marine" />
+                        </tokens>
+                    </MultiInput>
+                    <Label text="Port" />
+                    <Text text="Barry" />
+                    <Label text="Location" />
+                    <Text text="20, Hoofddorp, 2454 AE Amsterdam" />
+                    <Label text="Title" />
+                    <Text
+                        text="Something went wrong! I don't know what it is."
+                    />
+                    <Label text="Date and Time" />
+                    <Text text="17-June-2024 10:43:00 AM" />
+                    <Label text="Description" />
+                    <Text
+                        text="There is something going wrong with the port Barry and i would like to report it."
+                    />
+                    <Label text="What action did you take?" />
+                    <Text text="None. Just Reporting" />
+                </form:SimpleForm> -->
+
+                <form:SimpleForm>
+                    <Label text="Category" />
+                    <Text text="{/incidentType}" />
+                    <Label text="Classification" />
+                    <Text text="{/classification}" /> 
+
+                    <Label text="Compliance" />
+                   <Text
+                        text="{
+                            path: '/',
+                            formatter: '.complianceFormatter',
+                            parts: [
+                                '/selectedSecurity',
+                                '/selectedEnvironment',
+                                '/selectedHealthy',
+                                '/selectedMarine'
+                            ]
+                        }"
+                    />
+
+                    <Label text="Port" />
+                    <Text text="{/port}" /> 
+                    <Label text="Location" />
+                    <Text text="{/location}" /> 
+
+                    <Label text="Title" />
+                    <Text text="{/title}" />
+
+                    <Label text="Date and Time" />
+                    <Text text="{/dateTime}" /> 
+
+                    <Label text="Description" />
+                    <Text text="{/description}" /> 
+
+                    <Label text="What action did you take?" />
+                    <Text text="{/action}" /> 
                 </form:SimpleForm>
             </WizardStep>
         </Wizard>

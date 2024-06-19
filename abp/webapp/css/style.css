@@ -3,6 +3,11 @@
 .sapUiSmallMarginStart {
     margin-left: 8px; /* Adjust the spacing as required */
 }
+.sec{
+    margin-left:13.5%;
+}
+
+
 /* .customBackground {
     background-color: rgb(17, 50, 116) !important; 
    color:#fff;

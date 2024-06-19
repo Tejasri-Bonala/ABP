@@ -70,7 +70,11 @@
         "settings": {
           "bundleName": "abp.i18n.i18n"
         }
-      }
+      },
+      "classification": {
+				"type": "sap.ui.model.json.JSONModel",
+				"dataSource": "classificationData"
+			}
     },
     "resources": {
       "css": [
