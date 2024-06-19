@@ -4,17 +4,20 @@ sap.ui.define([
     "use strict";
 
     return Controller.extend("abp.controller.Main", {
-        onInit: function () {
+        onInit: function() {
+            // Initialize properties for various selections and states
             var oModel = new sap.ui.model.json.JSONModel({
                 selectedSecurity: false,
                 selectedEnvironment: false,
                 selectedHealthy: false,
                 selectedMarine: false,
                 what3words: "",
-                mapVisible: false
+                mapVisible: false,
+                selectedFiles: []  
             });
-            this.getView().setModel(oModel);
         
+            // Set the model to the view
+            this.getView().setModel(oModel);
         },
         
         onSecuritySelect: function (oEvent) {
@@ -75,35 +78,122 @@ sap.ui.define([
             // Update the model to hide the hide button
             this.getView().getModel().setProperty("/mapVisible", false);
         },
-        onSubmit: function() {
-            // Build your payload data to send to the endpoint
-            var formData = {
-                // Populate with your form data properties
-                Name: this.getView().getModel().getProperty("/Name"),
-                Telephone: this.getView().getModel().getProperty("/Telephone"),
-                Email: this.getView().getModel().getProperty("/Email"),
-                // Add other form fields as needed
-            };
+       
+
         
-            // Example of AJAX call to send data to the endpoint
-            jQuery.ajax({
-                type: "POST",
-                contentType: "application/json",
-                url: "https://l20255-iflmap.hcisbp.eu1.hana.ondemand.com/cxf/INC_CREATE1",
-                data: JSON.stringify(formData),
-                dataType: "json",
-                success: function(data, textStatus, jqXHR) {
-                    // Handle success response
-                    console.log("Submission successful:", data);
-                    // Optionally, navigate to a success page or perform other actions
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    // Handle error response
-                    console.error("Error submitting data:", textStatus, errorThrown);
-                    // Optionally, show an error message to the user
-                }
-            });
-        }
+
+        // onFileUploaderChange: function (oEvent) {
+        //    var aFiles = oEvent.getParameter("files");
+        //      var oModel = this.getView().getModel(); 
+        
+        //    // Get the current files list from the model
+        //     var aCurrentFiles = oModel.getProperty("/files") || [];
+            
+        //     // Prepare new files array to append
+        //     var aNewFiles = [];
+        //     for (var i = 0; i < aFiles.length; i++) {
+        //         aNewFiles.push({
+        //             fileName: aFiles[i].name
+        //          });
+        //     }
+        
+        //     // Concatenate the current files with the new files
+        //     var aAllFiles = aCurrentFiles.concat(aNewFiles);
+        
+        //     // Update the model with the combined files list
+        //     oModel.setProperty("/files", aAllFiles);
+        
+        //     // Clear the FileUploader field if needed (optional)
+        //     var oFileUploader = this.byId("fileUploader");
+        //     oFileUploader.clear(); 
+        // },
+
+        onFileUploaderChange: function (oEvent) {
+            var aFiles = oEvent.getParameter("files");
+            var oModel = this.getView().getModel(); 
+        
+            // Get the current files list from the model
+            var aCurrentFiles = oModel.getProperty("/files") || [];
+            
+            // Prepare new files array to append
+            var aNewFiles = [];
+            for (var i = 0; i < aFiles.length; i++) {
+                aNewFiles.push({
+                    fileName: aFiles[i].name
+                });
+            }
+        
+            // Concatenate the current files with the new files
+            var aAllFiles = aCurrentFiles.concat(aNewFiles);
+        
+            // Update the model with the combined files list
+            oModel.setProperty("/files", aAllFiles);
+        
+            // Clear the FileUploader field if needed (optional)
+            var oFileUploader = this.byId("fileUploader");
+            oFileUploader.clear(); 
+        },
+        
+        
+        // onDeleteItem: function(oEvent) {
+        //     // Get the list item context and model
+        //     var oButton = oEvent.getSource();
+        //     var oItem = oButton.getParent().getParent(); 
+        //     var oContext = oItem.getBindingContext();
+        //     var oModel = this.getView().getModel();
+        
+        //     // Get the path of the selected item
+        //     var sPath = oContext.getPath();
+        //     var iIndex = parseInt(sPath.substring(sPath.lastIndexOf('/') + 1));
+        
+        //     // Get the files array from the model
+        //     var aFiles = oModel.getProperty("/files");
+        
+        //     // Remove the selected file from the array
+        //     if (iIndex > -1) {
+        //         aFiles.splice(iIndex, 1);
+        //     }
+        
+        //     // Update the model with the updated files array
+        //     oModel.setProperty("/files", aFiles);
+        // },
+        onDeleteItem: function(oEvent) {
+            // Get the list item context and model
+            var oButton = oEvent.getSource();
+            var oItem = oButton.getParent().getParent(); 
+            var oContext = oItem.getBindingContext();
+            var oModel = this.getView().getModel();
+        
+            // Get the path of the selected item
+            var sPath = oContext.getPath();
+            var iIndex = parseInt(sPath.substring(sPath.lastIndexOf('/') + 1));
+        
+            // Get the files array from the model
+            var aFiles = oModel.getProperty("/files");
+        
+            // Remove the selected file from the array
+            if (iIndex > -1) {
+                aFiles.splice(iIndex, 1);
+            }
+        
+            // Update the model with the updated files array
+            oModel.setProperty("/files", aFiles);
+        },
+        
+        onUpload: function () {
+            var oModel = this.getView().getModel();
+            var aFiles = oModel.getProperty("/files");
+        
+            // Implement upload logic here (e.g., send files to server)
+        
+            // Optionally, clear files from model after upload
+            oModel.setProperty("/files", []);
+        },
+        onActivate: function() {
+            var oModel = this.getView().getModel();
+            oModel.setProperty("/files", []); // Initialize or clear files array
+        },
+        
         
     });
 });
