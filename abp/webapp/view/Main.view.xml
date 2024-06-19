@@ -305,6 +305,18 @@
                             </IconTabFilter>
                         </items>
                     </IconTabBar>
+                </form:SimpleForm>
+            </WizardStep>
+
+<WizardStep
+                id="EventDetails"
+                title="Event Details"
+                activate="onActivate"
+            >
+                <form:SimpleForm
+                    editable="true"
+                    layout="ResponsiveGridLayout"
+                >
                     <Label text="Title" />
                     <VBox>
                         <HBox>
@@ -332,9 +344,11 @@
                     />
                 </form:SimpleForm>
             </WizardStep>
-            <!-- <WizardStep
+
+
+            <WizardStep
                 id="OptionalInfoStep"
-                title="Images"
+                title="Attachments"
                 activate="onActivate"
             >
                 <Text
@@ -371,56 +385,14 @@
                         </HBox>
                     </CustomListItem>
                 </List>
-            </WizardStep> -->
- <WizardStep
-    id="OptionalInfoStep"
-    title="Images"
-    activate="onActivate"
->
-    <Text
-        text="Upload photos of the situation. Click 'Browse' to find photos on your computer and then click 'Upload' to attach. Each photo can be a maximum of 8MB."
-    />
-    <form:SimpleForm
-        editable="true"
-        layout="ResponsiveGridLayout"
-    >
-        <Label text="Cover photo" />
-        <u:FileUploader
-            id="fileUploader"
-            width="400px"
-            tooltip="Upload product cover photo to the local server"
-            style="Emphasized"
-            placeholder="Choose a file for Upload..."
-            multiple="true"
-            change="onFileUploaderChange"
-        />
-    </form:SimpleForm>
 
-    <List
-        id="fileList"
-        items="{/files}"
-    >
-        <CustomListItem>
-            <HBox alignItems="Center">
-                <StandardListItem title="{fileName}" />
                 <Button
-                    icon="sap-icon://decline"
-                    type="Transparent"
-                    press="onDeleteItem"
+                    id="uploadButton"
+                    text="Upload"
+                    press="onUpload"
+                    visible="{= ${/files}.length > 0 }"
                 />
-            </HBox>
-        </CustomListItem>
-    </List>
-
-    <Button
-        id="uploadButton"
-        text="Upload"
-        press="onUpload"
-        visible="{= ${/files}.length > 0 }"
-    />
-</WizardStep>
-
-
+            </WizardStep>
 
             <WizardStep
                 id="PricingStep"

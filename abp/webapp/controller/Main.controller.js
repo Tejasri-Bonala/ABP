@@ -82,37 +82,11 @@ sap.ui.define([
 
         
 
-        // onFileUploaderChange: function (oEvent) {
-        //    var aFiles = oEvent.getParameter("files");
-        //      var oModel = this.getView().getModel(); 
-        
-        //    // Get the current files list from the model
-        //     var aCurrentFiles = oModel.getProperty("/files") || [];
-            
-        //     // Prepare new files array to append
-        //     var aNewFiles = [];
-        //     for (var i = 0; i < aFiles.length; i++) {
-        //         aNewFiles.push({
-        //             fileName: aFiles[i].name
-        //          });
-        //     }
-        
-        //     // Concatenate the current files with the new files
-        //     var aAllFiles = aCurrentFiles.concat(aNewFiles);
-        
-        //     // Update the model with the combined files list
-        //     oModel.setProperty("/files", aAllFiles);
-        
-        //     // Clear the FileUploader field if needed (optional)
-        //     var oFileUploader = this.byId("fileUploader");
-        //     oFileUploader.clear(); 
-        // },
-
         onFileUploaderChange: function (oEvent) {
-            var aFiles = oEvent.getParameter("files");
-            var oModel = this.getView().getModel(); 
+           var aFiles = oEvent.getParameter("files");
+             var oModel = this.getView().getModel(); 
         
-            // Get the current files list from the model
+           // Get the current files list from the model
             var aCurrentFiles = oModel.getProperty("/files") || [];
             
             // Prepare new files array to append
@@ -120,7 +94,7 @@ sap.ui.define([
             for (var i = 0; i < aFiles.length; i++) {
                 aNewFiles.push({
                     fileName: aFiles[i].name
-                });
+                 });
             }
         
             // Concatenate the current files with the new files
@@ -133,30 +107,9 @@ sap.ui.define([
             var oFileUploader = this.byId("fileUploader");
             oFileUploader.clear(); 
         },
+
+       
         
-        
-        // onDeleteItem: function(oEvent) {
-        //     // Get the list item context and model
-        //     var oButton = oEvent.getSource();
-        //     var oItem = oButton.getParent().getParent(); 
-        //     var oContext = oItem.getBindingContext();
-        //     var oModel = this.getView().getModel();
-        
-        //     // Get the path of the selected item
-        //     var sPath = oContext.getPath();
-        //     var iIndex = parseInt(sPath.substring(sPath.lastIndexOf('/') + 1));
-        
-        //     // Get the files array from the model
-        //     var aFiles = oModel.getProperty("/files");
-        
-        //     // Remove the selected file from the array
-        //     if (iIndex > -1) {
-        //         aFiles.splice(iIndex, 1);
-        //     }
-        
-        //     // Update the model with the updated files array
-        //     oModel.setProperty("/files", aFiles);
-        // },
         onDeleteItem: function(oEvent) {
             // Get the list item context and model
             var oButton = oEvent.getSource();
@@ -179,6 +132,7 @@ sap.ui.define([
             // Update the model with the updated files array
             oModel.setProperty("/files", aFiles);
         },
+       
         
         onUpload: function () {
             var oModel = this.getView().getModel();
