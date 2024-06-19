@@ -1,0 +1,92 @@
+_schema-version: "3.2"
+ID: ABP
+version: 0.0.1
+modules:
+- name: ABP-destination-content
+  type: com.sap.application.content
+  requires:
+  - name: ABP-destination-service
+    parameters:
+      content-target: true
+  - name: ABP_html_repo_host
+    parameters:
+      service-key:
+        name: ABP_html_repo_host-key
+  - name: uaa_ABP
+    parameters:
+      service-key:
+        name: uaa_ABP-key
+  parameters:
+    content:
+      instance:
+        destinations:
+        - Name: abp_ABP_html_repo_host
+          ServiceInstanceName: ABP-html5-app-host-service
+          ServiceKeyName: ABP_html_repo_host-key
+          sap.cloud.service: abp
+        - Authentication: OAuth2UserTokenExchange
+          Name: abp_uaa_ABP
+          ServiceInstanceName: ABP-xsuaa-service
+          ServiceKeyName: uaa_ABP-key
+          sap.cloud.service: abp
+        existing_destinations_policy: ignore
+  build-parameters:
+    no-source: true
+- name: ABP-app-content
+  type: com.sap.application.content
+  path: .
+  requires:
+  - name: ABP_html_repo_host
+    parameters:
+      content-target: true
+  build-parameters:
+    build-result: resources
+    requires:
+    - artifacts:
+      - abp.zip
+      name: abp
+      target-path: resources/
+- name: abp
+  type: html5
+  path: abp
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+resources:
+- name: ABP-destination-service
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      HTML5Runtime_enabled: true
+      init_data:
+        instance:
+          destinations:
+          - Authentication: NoAuthentication
+            Name: ui5
+            ProxyType: Internet
+            Type: HTTP
+            URL: https://ui5.sap.com
+          existing_destinations_policy: update
+      version: 1.0.0
+    service: destination
+    service-name: ABP-destination-service
+    service-plan: lite
+- name: ABP_html_repo_host
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-name: ABP-html5-app-host-service
+    service-plan: app-host
+- name: uaa_ABP
+  type: org.cloudfoundry.managed-service
+  parameters:
+    path: ./xs-security.json
+    service: xsuaa
+    service-name: ABP-xsuaa-service
+    service-plan: application
+parameters:
+  deploy_mode: html5-repo
