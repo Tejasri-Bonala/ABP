@@ -8,15 +8,16 @@
 }
 
 
+
+
 /* .customBackground {
     background-color: rgb(17, 50, 116) !important; 
    color:#fff;
     
 } */
 
-/* .sapMWizard.sapMWizardBgStandard .sapMWizardStepContainer {
+.sapMWizard.sapMWizardBgStandard .sapMWizardStepContainer {
     background-color: rgb(17, 50, 116);
-    color: #fff;
 }
 
 .sapMWizardProgressNav {
@@ -27,4 +28,4 @@
     border: none;
     font-size: .875rem;
     border: 1rem #fff;
-} */
+}

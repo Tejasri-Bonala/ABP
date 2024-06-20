@@ -41,7 +41,7 @@
                         <Image
                             src="/images/spot-it.png"
                             width="100%"
-                            height="100px"
+                            height="150px"
                             densityAware="false"
                             alt="Banner Image"
                         />
@@ -80,51 +80,61 @@
                                 id="idReportTypeSB"
                                 visible="{device>/system/desktop}"
                                 selectedKey="{/incidentType}"
+                                selectionChange="onSelectionChange"
                             >
-                                <Button
-                                    id="idSBIncident"
-                                    text="Incident"
-                                    width="auto"
-                                />
-                                <Button
-                                    id="idSBNearMiss"
-                                    text="Near Miss"
-                                    width="auto"
-                                />
-                                <Button
-                                    id="idSBObservation"
-                                    text="Observation"
-                                    width="auto"
-                                />
+                                <items>
+                                    <SegmentedButtonItem
+                                        id="idSBIncident"
+                                        text="Incident"
+                                        width="auto"
+                                        key="incident"
+                                    />
+                                    <SegmentedButtonItem
+                                        id="idSBNearMiss"
+                                        text="Near Miss"
+                                        width="auto"
+                                        key="near"
+                                    />
+                                    <SegmentedButtonItem
+                                        id="idSBObservation"
+                                        text="Observation"
+                                        width="auto"
+                                        key="observation"
+                                    />
+                                </items>
                             </SegmentedButton>
                         </HBox>
                     </VBox>
                 </VBox>
                 <!-- Classification Heading -->
-                <VBox >
+                <VBox
+                    id="classificationVBox"
+                    visible="{= ${/incidentType} === 'observation'}"
+                >
                     <Title
                         text="Classification"
                         level="H5"
                     />
-                    <HBox alignItems="Center"
-                            justifyContent="Center"
-                            width="55%">
-                    <MultiInput
-                        id="idClassificationMultiInput"
-                        showSuggestion="true"
-                        width="300px"
-                        class="multiInputMargin" 
-                         value="{/classification}"
-                        suggestionItems="{
-                path: 'classification>/data',
-                sorter: { path: 'value' }
-            }"
+                    <HBox
+                        alignItems="Center"
+                        justifyContent="Center"
+                        width="100%"
                     >
-                        <core:Item
-                            key="{classification>key}"
-                            text="{classification>value}"
-                        />
-                    </MultiInput>
+                        <MultiComboBox
+                            id="idClassificationMultiComboBox"
+                            width="300px"
+                            class="multiInputMargin"
+                            items="{
+        path: 'classification>/data',
+        sorter: { path: 'value' }
+    }"
+                            selectedKeys="{/classification}"
+                        >
+                            <core:Item
+                                key="{classification>key}"
+                                text="{classification>value}"
+                            />
+                        </MultiComboBox>
                     </HBox>
                 </VBox>
                 <!-- Compliance Function Heading -->
@@ -224,7 +234,10 @@
                     </Select>
 
                     <Label text="Location description" />
-                    <Input value="{/location}"  width="300px" />
+                    <Input
+                        value="{/location}"
+                        width="300px"
+                    />
                     <!-- <core:HTML
                                 id="w3wMap"
                                 content=""
@@ -285,7 +298,7 @@
                                             id="loc"
                                             change="validateProdInfoStep"
                                             valueStateText="Select Location"
-                                            selectedKey="{/direction1}" 
+                                            selectedKey="{/direction1}"
                                         >
                                             <core:Item
                                                 key="north"
@@ -299,8 +312,8 @@
                                     </HBox>
                                     <HBox>
                                         <Input value="{/latitude2}" />
-                                        <Input value="{/longitude2}"  />
-                                        <Input value="{/long2}"  />
+                                        <Input value="{/longitude2}" />
+                                        <Input value="{/long2}" />
                                         <Select
                                             id="loc1"
                                             change="validateProdInfoStep"
@@ -363,14 +376,21 @@
                                 text="Use appropriate language. Remember, everything you write could potentially be releasable, including directly to the individual/s mentioned in this Spot-It."
                             />
                         </HBox>
-                        <Input value="{/title}"  width="300px" />
+                        <Input
+                            value="{/title}"
+                            width="300px"
+                        />
                     </VBox>
                     <Label text="Date/time event occurred" />
-                    <DateTimePicker value="{/dateTime}" width="300px"/>
+                    <DateTimePicker
+                        value="{/dateTime}"
+                        width="300px"
+                    />
                     <Label text="Description of events" />
                     <TextArea
                         value="{/description}"
-                        rows="8"  width="300px"
+                        rows="8"
+                        width="300px"
                     />
 
                     <Label
@@ -405,7 +425,6 @@
                         placeholder="Choose a file for Upload..."
                         multiple="true"
                         change="onFileUploaderChange"
-                      
                     />
                 </form:SimpleForm>
 
@@ -443,9 +462,15 @@
                     layout="ResponsiveGridLayout"
                 >
                     <Label text="Name (optional)" />
-                    <Input value="{/name}"    width="300px"/>
+                    <Input
+                        value="{/name}"
+                        width="300px"
+                    />
                     <Label text="Your Telephone (optional)" />
-                    <Input value="{/telephone}"  width="300px"/>
+                    <Input
+                        value="{/telephone}"
+                        width="300px"
+                    />
                     <Label text="Your Email(optional)" />
                     <VBox>
                         <HBox>
@@ -455,7 +480,10 @@
                                 selected="{/receiptOnly}"
                             />
                         </HBox>
-                        <Input value="{/email}"  width="300px" />
+                        <Input
+                            value="{/email}"
+                            width="300px"
+                        />
                         <Text
                             text="You do not have to give your name/telephone/email, but if you do we will be able to provide you with any feedback.
 If you would like an email receipt but not to submit your email as part of this report, you can do this by selecting 'Receipt only'."
@@ -507,10 +535,10 @@ If you would like an email receipt but not to submit your email as part of this 
                     <Label text="Category" />
                     <Text text="{/incidentType}" />
                     <Label text="Classification" />
-                    <Text text="{/classification}" /> 
+                    <Text text="{/classification}" />
 
                     <Label text="Compliance" />
-                   <Text
+                    <Text
                         text="{
                             path: '/',
                             formatter: '.complianceFormatter',
@@ -524,21 +552,21 @@ If you would like an email receipt but not to submit your email as part of this 
                     />
 
                     <Label text="Port" />
-                    <Text text="{/port}" /> 
+                    <Text text="{/port}" />
                     <Label text="Location" />
-                    <Text text="{/location}" /> 
+                    <Text text="{/location}" />
 
                     <Label text="Title" />
                     <Text text="{/title}" />
 
                     <Label text="Date and Time" />
-                    <Text text="{/dateTime}" /> 
+                    <Text text="{/dateTime}" />
 
                     <Label text="Description" />
-                    <Text text="{/description}" /> 
+                    <Text text="{/description}" />
 
                     <Label text="What action did you take?" />
-                    <Text text="{/action}" /> 
+                    <Text text="{/action}" />
                 </form:SimpleForm>
             </WizardStep>
         </Wizard>
