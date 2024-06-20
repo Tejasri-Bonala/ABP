@@ -53,6 +53,7 @@
         <Wizard
             id="CreateProductWizard"
             finishButtonText="Submit"
+            showNextButton="true"
             currentStep="PricingStep"
             class="sapUiResponsivePadding--header sapUiResponsivePadding--content"
         >
@@ -496,40 +497,7 @@ If you would like an email receipt but not to submit your email as part of this 
                 activate="onActivate"
                 title="Summary"
             >
-                <!-- <form:SimpleForm>
-                    <Label text="Category" />
-                    <Text text="Observation" />
-                    <Label text="Classification" />
-                    <MultiInput enabled="false">
-                        <tokens>
-                            <Token text="Behavioural Safety" />
-                            <Token text="Best Practice" />
-                        </tokens>
-                    </MultiInput>
-                    <Label text="Compliance" />
-                    <MultiInput enabled="false">
-                        <tokens>
-                            <Token text="Environment" />
-                            <Token text="Marine" />
-                        </tokens>
-                    </MultiInput>
-                    <Label text="Port" />
-                    <Text text="Barry" />
-                    <Label text="Location" />
-                    <Text text="20, Hoofddorp, 2454 AE Amsterdam" />
-                    <Label text="Title" />
-                    <Text
-                        text="Something went wrong! I don't know what it is."
-                    />
-                    <Label text="Date and Time" />
-                    <Text text="17-June-2024 10:43:00 AM" />
-                    <Label text="Description" />
-                    <Text
-                        text="There is something going wrong with the port Barry and i would like to report it."
-                    />
-                    <Label text="What action did you take?" />
-                    <Text text="None. Just Reporting" />
-                </form:SimpleForm> -->
+             
 
                 <form:SimpleForm>
                     <Label text="Category" />
@@ -567,8 +535,16 @@ If you would like an email receipt but not to submit your email as part of this 
 
                     <Label text="What action did you take?" />
                     <Text text="{/action}" />
+                    <Label text="Attachments" />
+                    <Text text="{/action}" />
                 </form:SimpleForm>
             </WizardStep>
         </Wizard>
+       <Button
+                    id="submitButton"
+                    text="Submit"
+                    press="onSubmit"
+                  
+                />
     </Page>
 </mvc:View>

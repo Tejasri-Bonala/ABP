@@ -10,6 +10,7 @@
     "title": "{{appTitle}}",
     "description": "{{appDescription}}",
     "dataSources": {
+      
 			"classificationData" : {
 				"uri": "model/data/Classification.json",
 				"type": "JSON"
